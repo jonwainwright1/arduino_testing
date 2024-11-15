@@ -1,0 +1,93 @@
+BLUETOOTH DONGLE (Perform operations here as root user)
+
+EXAMPLE CONNECTING TO A BLUETOOTH ELM327 DONGLE FROM LINUX COMMAND LINE
+OR THE BUILT IN RASPBERRY PI 3 BLUETOOTH DEVICE:
+
+
+Bluetooth service
+
+# Get the status of the Bluetooth service.
+service bluetooth status
+
+# If the Bluetooth service is not running, start it.
+service bluetooth start
+
+# Stop the Bluetooth service only if required.
+service bluetooth stop
+
+
+Pairing a Bluetooth device
+
+# Once a device is paired it should automatically pair in future.
+
+# Start the Bluetooth utility.
+bluetoothctl
+
+# Make sure the Bluetooth device is powered on.
+power on
+
+# Make sure an agent is running for the Bluetooth device.
+agent on
+
+# Start a scan for other Bluetooth devices in the area.
+scan on
+
+# Wait for the required Bluetooth device to be reported...
+
+# Stop scanning when the required Bluetooth device is found.
+scan off
+
+# Attempt to pair the required Bluetooth device.
+pair <dev>
+
+e.g. <dev>=00:1D:A5:F7:FF:0D
+
+# Pairing normally prompts for a password. Standard Bluetooth pairing passwords
+# are: 0000 or 1234, try these if you are unsure of the password.
+
+# If pairing fails or propt for password does not appear, try the following, and
+# then try paring again.
+agent off
+power off
+power on
+agent on
+
+# Once paired it should appear in the list of paired devices.
+paired-devices
+
+# You can now leave the Bluetooth utility and the device should be paired and
+# ready for use.
+quit
+
+
+Creating a serial device for use in the OBDII application
+
+# rfcomm associates the paired device ID with a serial device name.
+rfcomm bind 0 <dev>
+
+# The device it should create is:
+/dev/rfcomm0
+
+# To remove the serial device do the following if required.
+rfcomm release <dev>
+
+### Shouldn't need this command, force rfdevices to stop.
+### rfkill list
+
+
+Unpairing a Bluetooth device
+
+# Start the Bluetooth utility.
+bluetoothctl
+
+# Unpair the Bluetooth device if required.
+remove <dev>
+
+# Make sure the agent is stopped for the Bluetooth device.
+agent off
+
+# Make sure the Bluetooth device is powered down.
+power off
+
+# Exit the Bluetooth utility.
+quit
